@@ -108,3 +108,41 @@ erxes:
    Хүлээгдэж байна → Баталгаажсан → Бэлтгэж байна → Хүргэлтэд гарсан → Хүргэгдсэн, plus Цуцлагдсан.
 3. **Frontline → Forms → (order form) → Settings**: create a sales card in «Хүлээгдэж байна» for every submission.
    Staff move it to «Баталгаажсан» when the erxes invoice shows paid or the bank transfer with that code arrived.
+
+## 1.5 Test order from cart to receipt
+
+**Verified on a local production build:** `npm run test:order -- http://127.0.0.1:3418` passes **27 checks** (empty
+cart, unknown product, quantity limit, the browser's price ignored, 7,000₮ fee, free above 300,000₮, countryside
+refused, district / khoroo / address, QPay and transfer accepted, unknown payment refused, phone, email, company
+registry, same checkout key → same reference, payment check 400 / 503). Without erxes the order returns
+`503 not_configured`; the checkout then shows the phone number and keeps the cart. `--send` was **not run** (env vars
+not set). No payment was made.
+
+Steps for the real test (authorized credentials only):
+
+1. **Frontline → Forms → Create** «Вэбсайт захиалга» with fields Нэр, Утас, Имэйл, Захиалга; copy the form id and the
+   field ids into `ERXES_ORDER_FORM_ID` / `ERXES_ORDER_FIELD_IDS`. Set `ERXES_API_URL`, `ERXES_PAYMENT_IDS`. Redeploy.
+2. `npm run test:order -- https://<production url> --send`: one order, two items + delivery.
+3. Pay the invoice only with QPay's test merchant or with explicit authorization for a real charge; check that
+   `/order/<reference>` shows «Төлбөр төлөгдлөө», move the card, issue the eBarimt, mark delivered, void the test.
+
+## Permissions (erxes)
+
+- Staff who handle orders: Sales (cards), Forms (submissions), Payments (view invoices), eBarimt (issue).
+- Only the owner: Settings → Payments, Settings → eBarimt, product import.
+- The website uses only public erxes mutations; it needs no admin token.
+
+---
+
+## Open questions for CHIMGELDEI
+
+1. **Delivery fee**: the Zochil delivery option charges **7,000₮** (free above 300,000₮); the shop's delivery rule
+   text says **6,000₮** in city zones A and B. The site uses 7,000₮. Which is right, and what about other zones?
+2. **Countryside**: Zochil has the countryside flag on but no countryside option. Offer it online, and at what fee?
+3. **StorePay / Pocket / minu QR**: add them in erxes as extra payment methods?
+4. **Order code**: Zochil asked for a 7-digit order code in the transfer note; website orders use `CG-yymmdd-XXXXXX`.
+   Is that fine for the bank statement check, and who checks it?
+5. **Brands**: 27 products have no brand on Zochil; fill them in?
+6. **Skin types**: 106 products have no skin type category, so Skin Quest can't match them by skin type.
+7. **TIN / PosAPI** for eBarimt, **QPay merchant** outside Zochil.
+8. **Domain**: point chimgeldei.com at the new site when ready.
