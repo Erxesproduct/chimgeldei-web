@@ -52,3 +52,28 @@ Steps:
 3. Brands: **Products & services → Brands** (or a product property «Брэнд») from the `brand` column.
 4. **Inventories → Remainders**: enter real stock for the store.
 5. Photos: upload from `public/images/p/` (path in the CSV) if erxes should show them too.
+
+## 1.2 Payment (QPay and bank transfer)
+
+Zochil payment rule: **QPay** or **bank transfer** to Худалдаа Хөгжлийн Банк 803026316 (Чимгэлдэй Бьюти Стор ХХК),
+with only the order code as the transaction note; the order is confirmed 15–20 minutes after payment.
+StorePay, Pocket and minu QR are also switched on in Zochil but are not offered on the website yet (open question 3).
+
+How the website uses erxes (verified in the erxes 3.0 source, `backend/plugins/payment_api`):
+
+- QPay: `generateInvoiceUrl` (public) creates the invoice after the order is saved in erxes; the customer pays on the
+  erxes payment page and returns to `/order/<reference>`. `invoicesCheck` (public) is asked every 5 s there.
+- Bank transfer: no invoice. The order page shows the bank, account, holder, amount and the order code with copy
+  buttons. Staff match the bank statement to the code and move the card to «Баталгаажсан».
+- No order is sent to QPay unless it was first recorded in erxes (no money asked for an order staff cannot see).
+
+Steps:
+
+1. Get CHIMGELDEI's QPay merchant credentials (`client_id`, `client_secret`, `invoice_code`); ask QPay / Zochil
+   whether the current merchant can be used outside Zochil.
+2. **Settings → Payments → Add → QPay (v2)**: enter them. Make a 100₮ test invoice in erxes.
+3. Copy the payment method's `_id` into Vercel as `ERXES_PAYMENT_IDS`. If StorePay / Pocket are added in erxes later,
+   add their ids too: the erxes payment page then lets the customer choose.
+4. Bank transfer: decide who checks the ХХБ statement and how often (open question 4).
+5. **Not yet tested**: nothing has been run against a real QPay merchant. Do not call payments working until step 2
+   and section 1.5 pass with authorized credentials.
