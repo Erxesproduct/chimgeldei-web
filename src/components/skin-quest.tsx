@@ -33,9 +33,12 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
   const toggle = (id: string) => setPicked((l) => (l.includes(id) ? l.filter((x) => x !== id) : l.length >= 2 ? [l[1], id] : [...l, id]));
 
   const score = (p: LiteProduct) => (skin && p.sk.includes(skin) ? 3 : 0) + picked.filter((i) => p.is.includes(i)).length * 2 + Math.min(p.r, 50) / 50;
+  // one product per step, never the same product twice (some are filed under two steps)
+  const used = new Set<string>();
   const routine = steps.map((s) => {
-    const pool = liteProducts.filter((p) => p.a && p.st.includes(s.id) && (!skin || p.sk.includes(skin) || !p.sk.length));
+    const pool = liteProducts.filter((p) => p.a && !used.has(p.s) && p.st.includes(s.id) && (!skin || p.sk.includes(skin) || !p.sk.length));
     const best = [...pool].sort((a, b) => score(b) - score(a))[0] ?? null;
+    if (best) used.add(best.s);
     return { step: s, p: best };
   });
   const found = routine.filter((r) => r.p) as { step: Step; p: LiteProduct }[];
@@ -64,7 +67,7 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
                 setSkin(s.id);
                 setDone(false);
               }}
-              className={`rounded-[14px] border-[3px] border-ink p-4 text-left transition ${skin === s.id ? "-rotate-1 bg-tang text-white shadow-[4px_4px_0_var(--color-ink)]" : "bg-paper hover:-translate-y-0.5"}`}
+              className={`rounded-[14px] border-[3px] border-ink p-4 text-left transition ${skin === s.id ? "bg-tang text-white shadow-[4px_4px_0_var(--color-ink)]" : "bg-paper hover:-translate-y-0.5"}`}
             >
               <b className="display block text-[22px]">{s.name}</b>
               <span className="mt-1 block text-[13px] opacity-80">{SKIN_LINE[s.id]}</span>
@@ -97,7 +100,7 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
             </button>
           ))}
         </div>
-        <button type="button" disabled={!skin} onClick={() => setDone(true)} className="btn btn-cobalt mt-8 h-14 px-8 text-[17px]">
+        <button type="button" disabled={!skin} onClick={() => setDone(true)} className="btn btn-cobalt mt-8 min-h-14 w-full px-6 py-3 text-center text-[16px] !whitespace-normal sm:w-auto sm:px-8 sm:text-[17px]">
           {skin ? "Миний routine-г гарга ★" : "Эхлээд арьсны төрлөө сонго"}
         </button>
       </section>
@@ -118,7 +121,7 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
           </div>
           <ol className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {found.map(({ step, p }, k) => (
-              <li key={step.id} className="panel relative flex flex-col overflow-hidden bg-white" style={{ animationDelay: `${k * 60}ms` }}>
+              <li key={step.id} className="panel rise relative flex h-full flex-col overflow-hidden bg-white" style={{ animationDelay: `${k * 60}ms` }}>
                 <div className="relative flex items-center gap-3 border-b-[3px] border-ink px-4 py-3" style={{ background: step.tint }}>
                   <span className="display grid h-9 w-9 place-items-center rounded-[8px] border-[2.5px] border-ink bg-white text-[18px]">{k + 1}</span>
                   <span>
@@ -132,7 +135,7 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
                   </span>
                   <span className="flex min-w-0 flex-col">
                     {p.b && <span className="tag text-[11px] text-cobalt">{p.b}</span>}
-                    <span className="line-clamp-3 leading-snug font-bold">{p.n}</span>
+                    <span className="line-clamp-3 min-h-[4.1em] leading-snug font-bold">{p.n}</span>
                     <span className="display mt-auto pt-1 text-[19px]">{formatPrice(p.p)}</span>
                   </span>
                 </Link>
@@ -153,7 +156,7 @@ export function SkinQuest({ skins, issues, steps }: { skins: Facet[]; issues: Fa
                 found.forEach((r) => cart.add(r.p.v));
                 setAdded(true);
               }}
-              className="btn btn-ink h-14 px-7"
+              className="btn btn-ink min-h-14 w-full px-7 sm:w-auto"
             >
               <PlusIcon size={18} /> {added ? "Сагсанд нэмэгдлээ!" : "Бүгдийг сагсанд"}
             </button>

@@ -43,7 +43,7 @@
     opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(var(--r, -6deg));
+    transform: scale(1) rotate(var(--r, 0deg));
   }
 }
 @keyframes rise {
