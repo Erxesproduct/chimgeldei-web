@@ -89,3 +89,22 @@ the server) and writes it on the order. The receipt is issued in erxes by staff 
 3. **Settings → eBarimt**: PosAPI URL, TIN, district code, VAT switches; assign it to the website pipeline and the
    store POS.
 4. For every paid order: issue the receipt once (check the card first) and send the lottery number by SMS / email.
+
+## 1.4 Delivery zones, fees and order statuses
+
+Website (done), from Zochil shop 5587:
+
+| Option | Fee | Rule |
+| --- | --- | --- |
+| Улаанбаатар хот | 7,000₮, free when goods are above 300,000₮ | within 48 h of confirmation (72 h on holidays / sales); district, khoroo 1–45, address |
+
+- Countryside is not offered online: Zochil has no countryside delivery option. The site says to call (open question 2).
+- Fees and limits live in `src/content/business.ts`; change them there and in the erxes delivery product.
+
+erxes:
+
+1. Import `docs/erxes/chimgeldei-delivery.csv` (`CG-DELIVERY-438` Улаанбаатар, 7,000₮).
+2. **Sales → Boards → «Онлайн захиалга» → pipeline «Вэбсайт»**, stages (as on the website order page):
+   Хүлээгдэж байна → Баталгаажсан → Бэлтгэж байна → Хүргэлтэд гарсан → Хүргэгдсэн, plus Цуцлагдсан.
+3. **Frontline → Forms → (order form) → Settings**: create a sales card in «Хүлээгдэж байна» for every submission.
+   Staff move it to «Баталгаажсан» when the erxes invoice shows paid or the bank transfer with that code arrived.
