@@ -1,0 +1,43 @@
+﻿code,name,parent code
+CG,CHIMGELDEI,
+CG-SKINCARE,Арьс арчилгаа,CG
+CG-MAKEUP,Нүүр будалт,CG
+CG-BODY,Бие арчилгаа,CG
+CG-SETS,Багц,CG
+CG-TOOLS,Туслах хэрэгсэл,CG
+CG-CLEANSING-OIL,Тосон цэвэрлэгч,CG-SKINCARE
+CG-FOAM,Хөөсөн цэвэрлэгч,CG-SKINCARE
+CG-GEL-CLEANSER,Гелэн цэвэрлэгч,CG-SKINCARE
+CG-TONER,Тонер,CG-SKINCARE
+CG-ESSENCE,Эссенс,CG-MAKEUP
+CG-SERUM,"Сэрум, ампул",CG-SKINCARE
+CG-CREAM,Чийгшүүлэх тос,CG-SKINCARE
+CG-SUN-CHEMICAL,Химийн нарны тос,CG-SKINCARE
+CG-SHEET-MASK,Салфеткан маск,CG-SKINCARE
+CG-PEELING,Гуужуулагч,CG-SKINCARE
+CG-EYE-CREAM,Зовхины тос,CG-SKINCARE
+CG-TONER-PAD,Тонер пад,CG-SKINCARE
+CG-CLEANSING-WATER,Усан цэвэрлэгч,CG-MAKEUP
+CG-PATCH,Батганы наалт,CG-SKINCARE
+CG-MASK-SET,Маск багц,CG-SETS
+CG-CUSHION,Кюшион,CG-MAKEUP
+CG-MAKEUP-BASE,Будалтын суурь,CG-MAKEUP
+CG-BLUSH,Хацар өнгөлөгч,CG-MAKEUP
+CG-SUN-MINERAL,Минерал нарны тос,CG-MAKEUP
+CG-SUN-STICK,Стик нарны тос,CG-SKINCARE
+CG-BALM,Цэвэрлэгч балм,CG-SKINCARE
+CG-MIST,Мист,CG-MAKEUP
+CG-CLAY-MASK,Шавран маск,CG-SKINCARE
+CG-WRAPPING-MASK,Зуурдаг маск,CG-SKINCARE
+CG-EYE-MASK,Зовхины маск,CG-SKINCARE
+CG-HYDROGEL-MASK,Гидрогел маск,CG-SKINCARE
+CG-WASH-OFF-MASK,Угаадаг маск,CG-SKINCARE
+CG-SETTING-MIST,Будаг түгжигч мист,CG-MAKEUP
+CG-POWDER-BLUSH,Хуурай энгэсэг,CG-MAKEUP
+CG-EYE-PENCIL,Нүдний харандаа,CG-MAKEUP
+CG-CONTOUR,Контур,CG-MAKEUP
+CG-LIP-GLOSS,Уруул өнгөлөгч,CG-MAKEUP
+CG-LIPSTICK,Уруулын будаг,CG-MAKEUP
+CG-LIP-TINT,Уруулын тинт,CG-MAKEUP
+CG-BROW,Хөмсөг,CG-MAKEUP
+CG-DELIVERY,Хүргэлт,CG
